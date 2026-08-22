@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 Matthew Fennell <matthew@fennell.dev>
+#
+# SPDX-License-Identifier: blessing
+
+.DS_Store
+.netrc
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+/.build
+/Packages
+DerivedData/
+Package.resolved
+xcuserdata/

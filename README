@@ -1,0 +1,36 @@
+We are currently moving away from CocoaPods, as detailed in
+monal-im/Monal#1685.
+
+As part of this, we want to migrate from clemensg/sqlite3pod (current CocoaPod
+dependency), to sbooth/CSQLite (new SwiftPM dependency), since the former does
+not provide a Swift Package.
+
+The two use different default SQLite compile flags. However, the SwiftPM
+dependency offers SwiftPM traits that allow us to create an equivalent (besides
+minor differences that don't affect us) configuration.
+
+Support for SwiftPM traits are newly added in XCode. To use them, we must
+update our Project Format version to XCode 26.3. However, CocoaPods breaks on
+project formats above 16.0 due to changes to the way that shellScripts are
+represented. In earlier versions, they are a single string, but in later
+versions, they become an array, which CocoaPods doesn't expect (see
+CocoaPods/CocoaPods#12794 for more info).
+
+As a result - CSQLite with traits and CocoaPods can't co-exist in Monal. This
+is a problem, because I planned to migrate everything (including SQLite) except
+for some old-UI-only dependencies, which I planned to leave unmigrated on
+CocoaPods until the old UI was deco'd. Some of these dependencies have no Swift
+package and also receive no updates, and I want to avoid too much manual
+packaging work for dependencies that will be removed anyway. The above
+constraints mean that CSQLite must migrate as CocoaPods is deintegrated - i.e.,
+it must be the final dependency to move over, if we wish to use traits to
+maintain comparable compile options.
+
+To avoid this issue, create a package that wraps and reexports CSQLite, but
+defines the traits we need in Monal as the default. That way, the package can
+be used in Monal without needing to set any custom traits, and our Project
+Format can remain on XCode 15.0 for the time being.
+
+Then, once the old UI is deco'd and CocoaPods is removed, we can silently
+switch to upstream's CSQLite, which should not differ from us apart from our
+default trait selection.
