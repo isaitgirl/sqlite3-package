@@ -23,6 +23,8 @@ let package = Package(
                 "DEFAULT_MEMSTATUS_0",
                 "DEFAULT_WAL_SYNCHRONOUS_1",
                 "DQS_0",
+                //isaCloud: full-text search (FTS5) for the search in messages; the list is explicit, so the FTS5 that CSQLite enables by default was off
+                "ENABLE_FTS5",
                 "LIKE_DOESNT_MATCH_BLOBS",
                 "MAX_EXPR_DEPTH_0",
                 "OMIT_DECLTYPE",
